@@ -3,6 +3,7 @@ module github.com/Spondon16/mailme
 go 1.22.0
 
 require (
+	github.com/josskixg/TempMail-UnofficialAPI/go v0.0.0-20260702114231-3051282a24cb
 	github.com/pterm/pterm v0.12.80
 	github.com/spf13/cobra v1.9.1
 )
@@ -14,7 +15,6 @@ require (
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/gookit/color v1.5.4 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/josskixg/TempMail-UnofficialAPI/go v0.0.0-20260702114231-3051282a24cb // indirect
 	github.com/lithammer/fuzzysearch v1.1.8 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
