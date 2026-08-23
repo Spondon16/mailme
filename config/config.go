@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/mailme-cli/mailme/api"
+	"github.com/Spondon16/mailme/api"
 )
 
 var (

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/mailme-cli/mailme/cmd"
+import "github.com/Spondon16/mailme/cmd"
 
 func main() {
 	cmd.Execute()

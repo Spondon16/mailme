@@ -22,6 +22,18 @@
 
 ## Installation
 
+### Prebuilt Binaries
+
+Download the binary for your platform from the [Releases page](https://github.com/Spondon16/mailme/releases/latest), then:
+
+```sh
+# Linux / macOS — make it executable and move it onto your PATH
+chmod +x mailme-<platform>-<arch>
+sudo mv mailme-<platform>-<arch> /usr/local/bin/mailme
+```
+
+Each release includes a `SHA256SUMS.txt` — verify a download with `sha256sum -c SHA256SUMS.txt` before running it.
+
 ### From Source (Requires Go 1.22+)
 
 ```sh

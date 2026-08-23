@@ -1,4 +1,4 @@
-module github.com/mailme-cli/mailme
+module github.com/Spondon16/mailme
 
 go 1.22.0
 

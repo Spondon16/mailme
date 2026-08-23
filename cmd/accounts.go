@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/mailme-cli/mailme/config"
+	"github.com/Spondon16/mailme/config"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )
