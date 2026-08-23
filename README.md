@@ -223,24 +223,7 @@ gofmt -w .       # Format all files
 
 ---
 
-## Acknowledgments & Related Projects
+## Credits
 
-`mailme` is an original implementation, but it didn't happen in a vacuum. Credit where it's due:
-
-### Inspiration
-
-- **[Mailsy](https://github.com/BalliAsghar/Mailsy)** by [@BalliAsghar](https://github.com/BalliAsghar) — the primary feature inspiration for `mailme`. Its approach to multi-account management, message reading, and a fast, ergonomic mail.tm CLI shaped much of this tool's command design.
-- **[mailtm](https://github.com/ABGEO/mailtm)** by [@ABGEO](https://github.com/ABGEO) — an earlier Go client for the mail.tm API, referenced as prior art while designing `mailme`'s own API layer and account model.
-
-### Third-Party Providers Evaluated
-
-Two existing multi-provider projects were evaluated as possible integration paths for the additional providers described above:
-
-- **[TempMail-UnofficialAPI](https://github.com/josskixg/TempMail-UnofficialAPI)** by [@josskixg](https://github.com/josskixg) — a multi-language wrapper library covering 16 temp-mail services. This is the one `mailme` actually integrates: its Go package backs the `tempmail.plus`, `tempmailc`, and `mailnesia` providers. Being a native Go library, it drops directly into `mailme`'s existing `Provider` interface with no extra runtime or process to manage. Only providers whose inbox/message lookups are plain, stateless HTTP calls keyed by the email address were adopted — others in the library (e.g. `guerrillamail`, `tempmail.lol`, `dropmail`) require a session token that the library only holds in memory with no way to persist it, which is incompatible with `mailme` running as a fresh process on every command. See "Additional Providers" above for the full explanation.
-- **[TempMailHub](https://github.com/hzruo/tempmailhub)** by [@hzruo](https://github.com/hzruo) — a TypeScript/Hono-based temp-mail aggregation *service* (deployable to Cloudflare Workers, Deno, Vercel, etc.), fronting mail.tm, MinMail, TempMail Plus, EtempMail, and VanishPost behind one HTTP API. It was tested directly but **not adopted**: integrating it would mean running and trusting an extra Node/Deno process as a middleman, and live testing surfaced real problems in its own adapters — a hardcoded fallback to a stale, no-longer-active mail.tm domain that broke every `mailtm` account creation through it, and a provider (`etempmail`) that returned an obviously fake, troll-like payload for a freshly created inbox, suggesting bot detection rather than a working service. Wrapping TempMail-UnofficialAPI's Go package in-process proved to be the more reliable path.
-
----
-
-## License
-
-MIT License.
+- [Mailsy](https://github.com/BalliAsghar/Mailsy) and [mailtm](https://github.com/ABGEO/mailtm) — feature and design inspiration.
+- [TempMail-UnofficialAPI](https://github.com/josskixg/TempMail-UnofficialAPI) — backs the additional providers above.
