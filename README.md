@@ -26,7 +26,7 @@
 
 ```sh
 # Clone repository
-git clone https://github.com/mailme-cli/mailme.git
+git clone https://github.com/Spondon16/mailme.git
 cd mailme
 
 # Build binary
