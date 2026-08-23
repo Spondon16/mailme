@@ -1,0 +1,27 @@
+# Binaries
+/mailme
+/mailme.exe
+/bin/
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test artifacts
+*.out
+*.test
+*.prof
+
+# Temporary files
+*.tmp
+*.tmp.*
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
