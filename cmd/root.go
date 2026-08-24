@@ -10,7 +10,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version = "1.0.0"
+// version is overridden at build time via:
+//
+//	go build -ldflags "-X github.com/Spondon16/mailme/cmd.version=1.2.3"
+var version = "dev"
 
 var rootCmd = &cobra.Command{
 	Use:     "mailme",

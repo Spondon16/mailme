@@ -50,17 +50,22 @@ sudo install -m755 mailme /usr/local/bin/mailme
 
 ### Cross-Compilation
 
+The version reported by `mailme --version` is injected at build time via `-ldflags`; without it, a locally built binary reports `dev`.
+
 ```sh
+VERSION=1.2.3
+LDFLAGS="-s -w -X github.com/Spondon16/mailme/cmd.version=$VERSION"
+
 # Linux (amd64 / arm64)
-GOOS=linux GOARCH=amd64 go build -o dist/mailme-linux-amd64 .
-GOOS=linux GOARCH=arm64 go build -o dist/mailme-linux-arm64 .
+GOOS=linux GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/mailme-linux-amd64 .
+GOOS=linux GOARCH=arm64 go build -ldflags "$LDFLAGS" -o dist/mailme-linux-arm64 .
 
 # macOS (Apple Silicon / Intel)
-GOOS=darwin GOARCH=arm64 go build -o dist/mailme-darwin-arm64 .
-GOOS=darwin GOARCH=amd64 go build -o dist/mailme-darwin-amd64 .
+GOOS=darwin GOARCH=arm64 go build -ldflags "$LDFLAGS" -o dist/mailme-darwin-arm64 .
+GOOS=darwin GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/mailme-darwin-amd64 .
 
 # Windows (amd64)
-GOOS=windows GOARCH=amd64 go build -o dist/mailme-windows-amd64.exe .
+GOOS=windows GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/mailme-windows-amd64.exe .
 ```
 
 ---

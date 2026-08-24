@@ -23,8 +23,9 @@ jobs:
       - name: Build binaries
         run: |
           mkdir -p dist
+          VERSION="${GITHUB_REF_NAME#v}"
           build() {
-            GOOS=$1 GOARCH=$2 go build -ldflags "-s -w" -o dist/$3 .
+            GOOS=$1 GOARCH=$2 go build -ldflags "-s -w -X github.com/Spondon16/mailme/cmd.version=$VERSION" -o dist/$3 .
           }
           build linux   amd64 mailme-linux-amd64
           build linux   arm64 mailme-linux-arm64
