@@ -75,7 +75,10 @@ var deleteAccountCmd = &cobra.Command{
 		if err := client.DeleteAccount(acc.ID); err != nil {
 			printWarning("Remote delete failed (removing locally): " + err.Error())
 		}
-		config.RemoveAccount(acc.Email)
+		if !config.RemoveAccount(acc.Email) {
+			spinner.Fail("Failed to remove account locally.")
+			return
+		}
 		spinner.Success()
 		pterm.Success.Printfln("Account %s deleted.", acc.Email)
 	},

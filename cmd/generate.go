@@ -121,8 +121,9 @@ Examples:
 func saveAndAnnounce(account *api.Account) {
 	if err := config.AddAccount(account); err != nil {
 		printWarning("Account created but failed to save locally: " + err.Error())
+	} else if !config.SetActive(account.Email) {
+		printWarning("Account saved but could not be set as active.")
 	}
-	config.SetActive(account.Email)
 
 	fmt.Println()
 	pterm.DefaultSection.WithLevel(2).Printfln("Email: %s", pterm.Cyan(account.Email))

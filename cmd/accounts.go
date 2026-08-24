@@ -113,7 +113,10 @@ var accountsDeleteCmd = &cobra.Command{
 		if err := client.DeleteAccount(acc.ID); err != nil {
 			printWarning("Remote delete failed (removing locally): " + err.Error())
 		}
-		config.RemoveAccount(email)
+		if !config.RemoveAccount(email) {
+			spinner.Fail("Failed to remove account locally.")
+			return
+		}
 		spinner.Success()
 		pterm.Success.Printfln("Deleted %s", email)
 	},
@@ -145,10 +148,16 @@ it only clears the local config file.`,
 			}
 		}
 
+		failed := 0
 		for _, a := range accounts {
-			config.RemoveAccount(a.Email)
+			if !config.RemoveAccount(a.Email) {
+				failed++
+			}
 		}
-		pterm.Success.Printfln("Pruned %d accounts.", len(accounts))
+		if failed > 0 {
+			printWarning(fmt.Sprintf("Failed to remove %d of %d accounts.", failed, len(accounts)))
+		}
+		pterm.Success.Printfln("Pruned %d accounts.", len(accounts)-failed)
 	},
 }
 
@@ -230,7 +239,10 @@ var dCmd = &cobra.Command{
 		if err := client.DeleteAccount(acc.ID); err != nil {
 			printWarning("Remote delete failed (removing locally): " + err.Error())
 		}
-		config.RemoveAccount(acc.Email)
+		if !config.RemoveAccount(acc.Email) {
+			spinner.Fail("Failed to remove account locally.")
+			return
+		}
 		spinner.Success()
 		pterm.Success.Printfln("Deleted %s", acc.Email)
 	},

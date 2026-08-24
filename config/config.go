@@ -138,7 +138,8 @@ func UpdateToken(email, token string) error {
 	return saveAccounts(accounts)
 }
 
-// RemoveAccount removes an account by email.
+// RemoveAccount removes an account by email. It returns false if the account
+// wasn't found, or if it was found but persisting the removal failed.
 func RemoveAccount(email string) bool {
 	accounts, err := LoadAccounts()
 	if err != nil {
@@ -153,10 +154,10 @@ func RemoveAccount(email string) bool {
 		}
 		filtered = append(filtered, a)
 	}
-	if found {
-		saveAccounts(filtered)
+	if !found {
+		return false
 	}
-	return found
+	return saveAccounts(filtered) == nil
 }
 
 // GetAccount returns an account by email, or the most recent if email is empty.
@@ -182,7 +183,9 @@ func GetAccount(email string) (*api.Account, error) {
 	return recordToAccount(&accounts[len(accounts)-1]), nil
 }
 
-// SetActive moves an account to the end (most recent = active).
+// SetActive moves an account to the end (most recent = active). It returns
+// false if the account wasn't found, or if it was found but persisting the
+// change failed.
 func SetActive(email string) bool {
 	accounts, err := LoadAccounts()
 	if err != nil {
@@ -201,8 +204,7 @@ func SetActive(email string) bool {
 		return false
 	}
 	filtered = append(filtered, *target)
-	saveAccounts(filtered)
-	return true
+	return saveAccounts(filtered) == nil
 }
 
 func recordToAccount(r *AccountRecord) *api.Account {

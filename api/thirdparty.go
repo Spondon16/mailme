@@ -176,6 +176,8 @@ func (c *ThirdPartyClient) getMessageTempmailPlus(messageID string) (*MessageDet
 		Subject     string          `json:"subject"`
 		Text        string          `json:"text"`
 		HTML        string          `json:"html"`
+		Result      *bool           `json:"result"`
+		Error       string          `json:"error"`
 		Attachments []struct {
 			Filename    string `json:"filename"`
 			ContentType string `json:"content_type"`
@@ -184,9 +186,18 @@ func (c *ThirdPartyClient) getMessageTempmailPlus(messageID string) (*MessageDet
 	if err := json.Unmarshal(body, &m); err != nil {
 		return nil, fmt.Errorf("tempmail.plus: parse error: %w", err)
 	}
+	if m.Error != "" {
+		return nil, fmt.Errorf("tempmail.plus: %s", m.Error)
+	}
+	if m.Result != nil && !*m.Result {
+		return nil, fmt.Errorf("tempmail.plus: message not found")
+	}
 	from := m.FromMail
 	if from == "" {
 		from = m.From
+	}
+	if from == "" && m.Subject == "" && m.Text == "" && m.HTML == "" {
+		return nil, fmt.Errorf("tempmail.plus: message not found")
 	}
 	var attachments []Attachment
 	for _, a := range m.Attachments {
@@ -218,9 +229,13 @@ func (c *ThirdPartyClient) getMessageTempmailc(messageID string) (*MessageDetail
 		BodyText string `json:"body_text"`
 		HTML     string `json:"html"`
 		BodyHTML string `json:"body_html"`
+		Error    string `json:"error"`
 	}
 	if err := json.Unmarshal(body, &m); err != nil {
 		return nil, fmt.Errorf("tempmailc: parse error: %w", err)
+	}
+	if m.Error != "" {
+		return nil, fmt.Errorf("tempmailc: %s", m.Error)
 	}
 	from := m.From
 	if from == "" {
@@ -233,6 +248,9 @@ func (c *ThirdPartyClient) getMessageTempmailc(messageID string) (*MessageDetail
 	html := m.HTML
 	if html == "" {
 		html = m.BodyHTML
+	}
+	if from == "" && m.Subject == "" && text == "" && html == "" {
+		return nil, fmt.Errorf("tempmailc: message not found")
 	}
 	return &MessageDetail{
 		ID:       messageID,
