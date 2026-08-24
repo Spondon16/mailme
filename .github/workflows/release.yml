@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Build binaries
+        run: |
+          mkdir -p dist
+          build() {
+            GOOS=$1 GOARCH=$2 go build -ldflags "-s -w" -o dist/$3 .
+          }
+          build linux   amd64 mailme-linux-amd64
+          build linux   arm64 mailme-linux-arm64
+          build darwin  amd64 mailme-darwin-amd64
+          build darwin  arm64 mailme-darwin-arm64
+          build windows amd64 mailme-windows-amd64.exe
+
+      - name: Generate checksums
+        working-directory: dist
+        run: sha256sum * > SHA256SUMS.txt
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
